@@ -1,13 +1,18 @@
 #include "Engine.h"
 
 Engine::Engine(const char* windowTitle, int width, int height)
-    : window(nullptr), isRunning(true), lastTime(0.0), nbFrames(0) {
-    // Create and initialize the Window instance
-    window = new Window(windowTitle, width, height);
+    : window(new Window(windowTitle, width, height)), isRunning(true), lastTime(0.0), nbFrames(0) {
+    LoadResources();  // Load resources during engine initialization
 }
 
 Engine::~Engine() {
     Cleanup();
+}
+void Engine::LoadResources() {
+    // Example of loading a texture
+    resourceManager.LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");
+
+    // Load other resources like sound effects or fonts when added
 }
 
 void Engine::Run() {

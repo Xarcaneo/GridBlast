@@ -2,6 +2,7 @@
 #define ENGINE_H
 
 #include "Window.h"
+#include "ResourceManager.h"
 
 class Engine {
 public:
@@ -11,16 +12,17 @@ public:
 
     // Public Methods
     void Run();           // Starts the main loop
-    void Update();        // Update method for game logic
-    void Render();        // Render method for drawing
+    void LoadResources(); // Load all necessary resources
 
 private:
-    // Private Methods
-    void ProcessInput();  // Handle user input
-    void Cleanup();       // Cleanup and free resources
+    void ProcessInput();  // Input handling
+    void Update();        // Game logic update
+    void Render();        // Rendering logic
+    void Cleanup();       // Cleanup resources
 
     // Private Members
     Window* window;       // Pointer to the Window object
+    ResourceManager resourceManager; // Resource manager for handling resources
     bool isRunning;       // Is the engine running?
 
     // FPS tracking

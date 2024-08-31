@@ -1,8 +1,9 @@
-#include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "Engine.h"
 
 int main()
 {
+	Engine engine("OpenGL Window", 800, 600);  // Create engine with window title and size
+	engine.Run();
+
 	return 0;
 }

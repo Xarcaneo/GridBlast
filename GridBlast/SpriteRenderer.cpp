@@ -103,8 +103,8 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &textureHeight);
 
     // Calculate texture coordinates based on row, column, and texture dimensions
-    float tileWidth = 16.0f / textureWidth;  // Tile width in texture coordinates
-    float tileHeight = 16.0f / textureHeight; // Tile height in texture coordinates
+    float tileWidth = size.x / textureWidth;  // Tile width in texture coordinates
+    float tileHeight = size.y / textureHeight; // Tile height in texture coordinates
 
     glm::vec2 texCoordsMin(column * tileWidth, 1.0f - (row + 1) * tileHeight);
     glm::vec2 texCoordsMax((column + 1) * tileWidth, 1.0f - row * tileHeight);
@@ -112,9 +112,7 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     // Create transformation matrix for the sprite
     glm::mat4 model = glm::mat4(1.0f);  // Identity matrix
     model = glm::translate(model, glm::vec3(position, 0.0f));  // Translate to the position
-    model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f)); // Move to origin for rotation
     model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate
-    model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f)); // Move back to the original position
     model = glm::scale(model, glm::vec3(size, 1.0f)); // Scale to the correct size
 
     // Set up projection matrix (assuming an orthographic projection)
@@ -132,13 +130,13 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     // Bind the texture
     texture.Bind();
 
-    // Update the vertex data with new texture coordinates
+    // Define the quad vertices relative to the top-left corner using normalized device coordinates
     float vertices[] = {
-        // positions          // texture coords
-         1.0f,  1.0f, 0.0f,   texCoordsMax.x, texCoordsMax.y, // top right
-         1.0f, -1.0f, 0.0f,   texCoordsMax.x, texCoordsMin.y, // bottom right
-        -1.0f, -1.0f, 0.0f,   texCoordsMin.x, texCoordsMin.y, // bottom left
-        -1.0f,  1.0f, 0.0f,   texCoordsMin.x, texCoordsMax.y  // top left 
+        // positions        // texture coords
+        0.0f,  1.0f, 0.0f,  texCoordsMin.x, texCoordsMin.y, // top-left
+        1.0f,  1.0f, 0.0f,  texCoordsMax.x, texCoordsMin.y, // top-right
+        1.0f,  0.0f, 0.0f,  texCoordsMax.x, texCoordsMax.y, // bottom-right
+        0.0f,  0.0f, 0.0f,  texCoordsMin.x, texCoordsMax.y  // bottom-left
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -149,6 +147,7 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
+
 
 
 

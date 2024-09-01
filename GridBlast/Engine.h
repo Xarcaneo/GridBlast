@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "ResourceManager.h"
+#include "GridMap.h"
 
 class Engine {
 public:
@@ -23,6 +24,8 @@ private:
     // Private Members
     Window* window;       // Pointer to the Window object
     ResourceManager resourceManager; // Resource manager for handling resources
+    std::unique_ptr<GridMap> gridMap; // Grid map instance
+
     bool isRunning;       // Is the engine running?
 
     // FPS tracking

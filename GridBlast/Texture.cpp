@@ -50,3 +50,7 @@ void Texture::Unload() {
         textureID = 0;
     }
 }
+
+GLuint Texture::GetTextureID() const {
+    return textureID;
+}

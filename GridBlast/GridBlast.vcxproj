@@ -136,6 +136,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

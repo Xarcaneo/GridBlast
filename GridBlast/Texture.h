@@ -12,6 +12,7 @@ public:
 
     bool Load() override;  // Override the Load method to load textures
     void Bind() const;     // Bind the texture for use
+    GLuint GetTextureID() const; // Getter for textureID    
 
 private:
     std::string filePath;  // Path to the texture file

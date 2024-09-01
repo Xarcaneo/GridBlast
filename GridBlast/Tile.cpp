@@ -23,3 +23,7 @@ void Tile::Render() const {
     glm::vec2 tileSize = GameConfig::GetTileSize(); // Get the global tile size
     spriteRenderer.Render(texture, position, tileSize, rotate, color, row, column);
 }
+
+glm::vec2 Tile::GetPosition() const {
+    return position;
+}

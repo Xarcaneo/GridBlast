@@ -5,11 +5,12 @@
 Engine::Engine(const char* windowTitle, int width, int height)
     : window(new Window(windowTitle, width, height)), isRunning(true), lastTime(0.0), nbFrames(0) {
     LoadResources();  // Load resources during engine initialization
-    GameConfig::SetTileSize(glm::vec2(16.0f, 16.0f));
+    GameConfig::SetTileSize(glm::vec2(32.0f, 32.0f));
 
     //Initialize GridMap with the resource manager
-    gridMap = std::make_unique<GridMap>(20, 20, resourceManager);
-    gridMap->Initialize();
+    gridMap = std::make_unique<GridMap>(18, 15, resourceManager);
+
+    GameConfig::projectionMatrix = window->GetProjectionMatrix();
 }
 
 Engine::~Engine() {

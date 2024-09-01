@@ -2,6 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include "GameConfig.h"
 
 // Vertex and Fragment shader source code
 const char* vertexShaderSource = R"(
@@ -115,8 +116,8 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate
     model = glm::scale(model, glm::vec3(size, 1.0f)); // Scale to the correct size
 
-    // Set up projection matrix (assuming an orthographic projection)
-    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
+    // Get the projection matrix from GameConfig
+    glm::mat4 projection = GameConfig::projectionMatrix;
 
     // Send matrices to the shader
     unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -130,7 +131,7 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     // Bind the texture
     texture.Bind();
 
-    // Define the quad vertices relative to the top-left corner using normalized device coordinates
+    // Update the vertex data with new texture coordinates
     float vertices[] = {
         // positions        // texture coords
         0.0f,  1.0f, 0.0f,  texCoordsMin.x, texCoordsMin.y, // top-left
@@ -147,9 +148,6 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
-
-
-
 
 bool SpriteRenderer::compileShaders() {
     unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderSource);

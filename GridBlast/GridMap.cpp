@@ -9,6 +9,8 @@ GridMap::GridMap(int width, int height, ResourceManager& resourceManager)
     for (int x = 0; x < width; ++x) {
         grid[x].resize(height);
     }
+
+    Initialize();
 }
 
 void GridMap::Initialize() {
@@ -24,11 +26,9 @@ void GridMap::Initialize() {
             glm::vec2 position = glm::vec2(x * tileSize.x, y * tileSize.y);
             // Use the texture and position to create a StaticTile
             grid[x][y] = std::make_unique<StaticTile>(*texture, position, 0, 0);
-            std::cout << "Rendering Tile at position: (" << position.x << ", " << position.y << ")\n";
         }
     }
 }
-
 
 void GridMap::Render() const {
     for (int x = 0; x < width; ++x) {

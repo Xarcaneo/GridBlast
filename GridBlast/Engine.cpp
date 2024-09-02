@@ -4,7 +4,8 @@
 #include "IRenderService.h"
 
 Engine::Engine(const char* windowTitle, int width, int height)
-    : window(new Window(windowTitle, width, height)), isRunning(true), lastTime(0.0), nbFrames(0) {
+    : window(new Window(windowTitle, width, height)),
+    isRunning(true), lastTime(0.0), nbFrames(0) {
     LoadResources();  // Load resources during engine initialization
 
     std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
@@ -51,6 +52,8 @@ void Engine::ProcessInput() {
     if (glfwGetKey(window->GetGLFWwindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window->GetGLFWwindow(), true);
     }
+
+    gridMap->GetPlayer()->ProcessInput(window->GetGLFWwindow());
 }
 
 void Engine::Update() {

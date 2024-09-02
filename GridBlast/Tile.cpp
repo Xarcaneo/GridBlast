@@ -11,14 +11,11 @@ Tile::Tile(const Texture& texture, const glm::vec2& position, int row, int colum
     : texture(texture), position(position), row(row), column(column), rotate(rotate), color(color) {
     // Initialize the renderer only once
     if (!isRendererInitialized) {
-        InitializeRenderer();
+        spriteRenderer.Initialize();
         isRendererInitialized = true;
     }
 }
 
-void Tile::InitializeRenderer() {
-    spriteRenderer.Initialize();
-}
 
 void Tile::Render() const {
     std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();

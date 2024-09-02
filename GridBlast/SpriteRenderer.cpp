@@ -39,7 +39,8 @@ void main()
 )";
 
 SpriteRenderer::SpriteRenderer()
-    : VAO(0), VBO(0), EBO(0), shaderProgram(0) {}
+    : VAO(0), VBO(0), EBO(0), shaderProgram(0) {
+}
 
 SpriteRenderer::~SpriteRenderer() {
     // Clean up OpenGL resources

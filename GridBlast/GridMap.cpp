@@ -5,7 +5,8 @@
 #include "ServiceRegistry.h"
 
 GridMap::GridMap(int width, int height, ResourceManager& resourceManager)
-    : width(width), height(height), resourceManager(resourceManager) {
+    : width(width), height(height), resourceManager(resourceManager)
+ {
     grid.resize(width);
     for (int x = 0; x < width; ++x) {
         grid[x].resize(height);
@@ -30,6 +31,10 @@ void GridMap::Initialize() {
             grid[x][y] = std::make_unique<StaticTile>(*texture, position, 0, 0);
         }
     }
+
+    //std::shared_ptr<Texture> texture = resourceManager.GetTexture("borderTiles");
+    glm::vec2 position = glm::vec2(10, 10);
+    player = std::make_unique<Player>(*texture, position, 10);
 }
 
 void GridMap::Render() const {
@@ -40,6 +45,8 @@ void GridMap::Render() const {
             }
         }
     }
+
+    player->Render();
 }
 
 Tile* GridMap::GetTile(int x, int y) const {
@@ -51,5 +58,9 @@ Tile* GridMap::GetTile(int x, int y) const {
 
 void GridMap::SetTile(int x, int y, std::unique_ptr<Tile> tile) {
     grid[x][y] = std::move(tile); // Correct: Transfers ownership of the unique_ptr
+}
+
+Player* GridMap::GetPlayer() const {
+    return player.get();
 }
 

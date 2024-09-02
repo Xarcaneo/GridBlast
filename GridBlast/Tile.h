@@ -14,8 +14,6 @@ public:
 
     virtual void Render() const; // Concrete render method
 
-    static void InitializeRenderer(); // Call this to initialize the SpriteRenderer
-
     glm::vec2 GetPosition() const;  // Method to get the position of the tile
 
 protected:

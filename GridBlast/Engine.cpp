@@ -1,16 +1,18 @@
 #include "Engine.h"
 #include "SpriteRenderer.h"
-#include "GameConfig.h"
+#include "Bootstrapper.h"
+#include "IRenderService.h"
 
 Engine::Engine(const char* windowTitle, int width, int height)
     : window(new Window(windowTitle, width, height)), isRunning(true), lastTime(0.0), nbFrames(0) {
     LoadResources();  // Load resources during engine initialization
-    GameConfig::SetTileSize(glm::vec2(32.0f, 32.0f));
+
+    std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
+    retrievedRenderService->setTileSize(glm::vec2(32.0f, 32.0f));
+    retrievedRenderService->setProjectionMatrix(window->GetProjectionMatrix());
 
     //Initialize GridMap with the resource manager
     gridMap = std::make_unique<GridMap>(18, 15, resourceManager);
-
-    GameConfig::projectionMatrix = window->GetProjectionMatrix();
 }
 
 Engine::~Engine() {

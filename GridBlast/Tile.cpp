@@ -1,5 +1,6 @@
 #include "Tile.h"
-#include "GameConfig.h"
+#include "IRenderService.h"
+#include "ServiceRegistry.h"
 
 // Definition of the static SpriteRenderer
 SpriteRenderer Tile::spriteRenderer;
@@ -20,7 +21,8 @@ void Tile::InitializeRenderer() {
 }
 
 void Tile::Render() const {
-    glm::vec2 tileSize = GameConfig::GetTileSize(); // Get the global tile size
+    std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
+    glm::vec2 tileSize = retrievedRenderService->getTileSize();
     spriteRenderer.Render(texture, position, tileSize, rotate, color, row, column);
 }
 

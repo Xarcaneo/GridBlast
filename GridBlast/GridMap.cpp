@@ -1,7 +1,8 @@
 #include "GridMap.h"
-#include "GameConfig.h"
 #include "StaticTile.h"
 #include <iostream>
+#include "IRenderService.h"
+#include "ServiceRegistry.h"
 
 GridMap::GridMap(int width, int height, ResourceManager& resourceManager)
     : width(width), height(height), resourceManager(resourceManager) {
@@ -17,8 +18,9 @@ void GridMap::Initialize() {
     // Retrieve the texture from the resource manager
     std::shared_ptr<Texture> texture = resourceManager.GetTexture("borderTiles");
 
-    // Get the tile size from GameConfig
-    glm::vec2 tileSize = GameConfig::GetTileSize();
+    // Get the tile size
+    std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
+    glm::vec2 tileSize = retrievedRenderService->getTileSize();
 
     // Initialize the grid with tiles
     for (int x = 0; x < width; ++x) {

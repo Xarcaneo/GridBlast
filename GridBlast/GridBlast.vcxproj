@@ -132,12 +132,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bootstrapper.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="GameConfig.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GridMap.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderService.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="ServiceRegistry.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -145,11 +147,15 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bootstrapper.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GridMap.h" />
+    <ClInclude Include="IGameService.h" />
+    <ClInclude Include="IRenderService.h" />
+    <ClInclude Include="RenderService.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="ServiceRegistry.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="StaticTile.h" />
     <ClInclude Include="Texture.h" />

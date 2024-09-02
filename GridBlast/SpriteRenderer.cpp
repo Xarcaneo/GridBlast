@@ -2,7 +2,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "GameConfig.h"
+#include "IRenderService.h"
+#include "ServiceRegistry.h"
 
 // Vertex and Fragment shader source code
 const char* vertexShaderSource = R"(
@@ -117,7 +118,8 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     model = glm::scale(model, glm::vec3(size, 1.0f)); // Scale to the correct size
 
     // Get the projection matrix from GameConfig
-    glm::mat4 projection = GameConfig::projectionMatrix;
+    std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
+    glm::mat4 projection = retrievedRenderService->getProjectionMatrix();
 
     // Send matrices to the shader
     unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");

@@ -2,8 +2,6 @@
 #define TILE_H
 
 #include "SpriteRenderer.h"
-#include "Texture.h"
-#include <glm/glm.hpp>
 
 class Tile {
 public:

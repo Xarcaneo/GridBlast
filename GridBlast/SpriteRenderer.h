@@ -1,9 +1,9 @@
+#pragma once
 #ifndef SPRITE_RENDERER_H
 #define SPRITE_RENDERER_H
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
 #include "Texture.h"
+#include <glm/glm.hpp>
 
 class SpriteRenderer {
 public:

@@ -1,6 +1,7 @@
 #include "Engine.h"
-#include "SpriteRenderer.h"
 #include "Bootstrapper.h"
+#include "MenuManager.h"
+#include "Menu.h"
 #include "IRenderService.h"
 
 Engine::Engine(const char* windowTitle, int width, int height)
@@ -12,18 +13,16 @@ Engine::Engine(const char* windowTitle, int width, int height)
     retrievedRenderService->setTileSize(glm::vec2(32.0f, 32.0f));
     retrievedRenderService->setProjectionMatrix(window->GetProjectionMatrix());
 
-    //Initialize GridMap with the resource manager
-    gridMap = std::make_unique<GridMap>(18, 15, resourceManager);
+    // Initialize and run the menu manager
+    MenuManager::Instance().InitializeMenus();
 }
 
 Engine::~Engine() {
     Cleanup();
 }
 void Engine::LoadResources() {
-    // Example of loading a texture
-    resourceManager.LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");
-
-    // Load other resources like sound effects or fonts when added
+    ServiceRegistry::getInstance().getService<IResourceService>()->
+        LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");;
 }
 
 void Engine::Run() {
@@ -36,13 +35,13 @@ void Engine::Run() {
         window->PollEvents();
 
         // FPS calculation
-        double currentTime = glfwGetTime();
-        nbFrames++;
-        if (currentTime - lastTime >= 1.0) {
-            std::cout << 1000.0 / double(nbFrames) << " ms/frame\n";
-            nbFrames = 0;
-            lastTime += 1.0;
-        }
+        //double currentTime = glfwGetTime();
+        //nbFrames++;
+        //if (currentTime - lastTime >= 1.0) {
+        //    std::cout << 1000.0 / double(nbFrames) << " ms/frame\n";
+        //    nbFrames = 0;
+        //    lastTime += 1.0;
+        //}
     }
 
     Cleanup();
@@ -53,7 +52,9 @@ void Engine::ProcessInput() {
         glfwSetWindowShouldClose(window->GetGLFWwindow(), true);
     }
 
-    gridMap->GetPlayer()->ProcessInput(window->GetGLFWwindow());
+    if (MenuManager::Instance().CurrentMenu()) {
+        MenuManager::Instance().CurrentMenu()->ProcessInput(window->GetGLFWwindow());
+    }
 }
 
 void Engine::Update() {
@@ -64,10 +65,9 @@ void Engine::Render() {
     // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //// Render objects here
-    gridMap->Render();
-
-    // ...
+    if (MenuManager::Instance().CurrentMenu()) {
+        MenuManager::Instance().CurrentMenu()->Render();
+    }
 }
 
 void Engine::Cleanup() {

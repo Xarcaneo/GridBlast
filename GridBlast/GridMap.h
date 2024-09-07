@@ -3,13 +3,12 @@
 
 #include <vector>
 #include <memory>
-#include "Tile.h"
-#include "ResourceManager.h"
 #include "Player.h"
+#include "Tile.h"
 
 class GridMap {
 public:
-    GridMap(int width, int height, ResourceManager& resourceManager);
+    GridMap(int width, int height);
 
     void Initialize(); // Initialize the grid with tiles
     void Render() const; // Render all tiles in the grid
@@ -21,7 +20,6 @@ public:
 private:
     int width;
     int height;
-    ResourceManager& resourceManager; // Reference to the resource manager
     std::vector<std::vector<std::unique_ptr<Tile>>> grid; // 2D grid of tiles
     std::unique_ptr<Player> player;        // Player instance
 };

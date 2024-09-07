@@ -3,7 +3,6 @@
 
 #include <glm/glm.hpp>
 #include "SpriteRenderer.h"
-#include "ResourceManager.h"
 
 class Character {
 public:

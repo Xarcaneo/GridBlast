@@ -6,8 +6,8 @@ Player::Player(const Texture& texture, const glm::vec2& position, float speed)
     : Character(texture, position, speed) {
 }
 
-// Function to process input
-void Player::ProcessInput(GLFWwindow* window) {
+    // Function to process input
+    void Player::ProcessInput(GLFWwindow* window) {
     // Movement directions
     glm::vec2 direction(0.0f, 0.0f);
 
@@ -29,6 +29,4 @@ void Player::ProcessInput(GLFWwindow* window) {
         direction = glm::normalize(direction);
         Move(direction);  // Call the Move function on the current Player instance
     }
-
-    std::cout << "Player position: (" << position.x << ", " << position.y << ")" << std::endl;
 }

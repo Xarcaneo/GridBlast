@@ -1,11 +1,12 @@
 #include "GridMap.h"
 #include "StaticTile.h"
 #include <iostream>
+#include "IResourceService.h"
 #include "IRenderService.h"
 #include "ServiceRegistry.h"
 
-GridMap::GridMap(int width, int height, ResourceManager& resourceManager)
-    : width(width), height(height), resourceManager(resourceManager)
+GridMap::GridMap(int width, int height)
+    : width(width), height(height)
  {
     grid.resize(width);
     for (int x = 0; x < width; ++x) {
@@ -17,7 +18,7 @@ GridMap::GridMap(int width, int height, ResourceManager& resourceManager)
 
 void GridMap::Initialize() {
     // Retrieve the texture from the resource manager
-    std::shared_ptr<Texture> texture = resourceManager.GetTexture("borderTiles");
+    std::shared_ptr<Texture> texture = ServiceRegistry::getInstance().getService<IResourceService>()->GetTexture("borderTiles");
 
     // Get the tile size
     std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();

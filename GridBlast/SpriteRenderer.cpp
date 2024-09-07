@@ -1,9 +1,9 @@
 #include "SpriteRenderer.h"
+#include "IRenderService.h"
+#include "ServiceRegistry.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "IRenderService.h"
-#include "ServiceRegistry.h"
 
 // Vertex and Fragment shader source code
 const char* vertexShaderSource = R"(

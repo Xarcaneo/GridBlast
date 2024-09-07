@@ -6,6 +6,7 @@
 #include <stack>
 #include <unordered_map>
 #include <string>
+#include <functional>
 
 class Menu;
 
@@ -17,7 +18,7 @@ public:
     void OpenMenu(const std::string& menuName); // Open a menu by name
     void CloseMenu(); // Close the current menu
 
-    // Publicly accessible current menu
+    void ForEachOpenedMenu(const std::function<void(std::shared_ptr<Menu>)>& callback) const;
     std::shared_ptr<Menu> CurrentMenu() const;  // Getter for the current menu
 
 private:

@@ -65,10 +65,13 @@ void Engine::Render() {
     // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if (MenuManager::Instance().CurrentMenu()) {
-        MenuManager::Instance().CurrentMenu()->Render();
-    }
+    // Iterate through all opened menus and render them
+    MenuManager::Instance().ForEachOpenedMenu([](std::shared_ptr<Menu> menu)
+        {
+            menu->Render();  // Render each menu
+        });
 }
+
 
 void Engine::Cleanup() {
     delete window;

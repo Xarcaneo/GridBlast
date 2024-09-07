@@ -3,6 +3,7 @@
 #include <iostream>
 #include "MainMenu.h"
 #include "GameMenu.h"
+#include "PauseMenu.h"
 
 MenuManager& MenuManager::Instance() {
     static MenuManager instance;
@@ -19,6 +20,7 @@ void MenuManager::InitializeMenus() {
 void MenuManager::LoadMenus() {
     menus["MainMenu"] = std::make_shared<MainMenu>();
     menus["GameMenu"] = std::make_shared<GameMenu>();
+    menus["PauseMenu"] = std::make_shared<PauseMenu>();
 
     for (auto& pair : menus) {
         pair.second->OnStart();
@@ -65,4 +67,13 @@ std::shared_ptr<Menu> MenuManager::CurrentMenu() const {
         return menuStack.top();
     }
     return nullptr;
+}
+
+// Loop through all opened menus
+void MenuManager::ForEachOpenedMenu(const std::function<void(std::shared_ptr<Menu>)>& callback) const {
+    std::stack<std::shared_ptr<Menu>> tempStack = menuStack; // Copy the stack
+    while (!tempStack.empty()) {
+        callback(tempStack.top());
+        tempStack.pop();
+    }
 }

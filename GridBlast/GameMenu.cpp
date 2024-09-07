@@ -35,4 +35,8 @@ void GameMenu::ProcessInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
         MenuManager::Instance().OpenMenu("MainMenu");
     }
+
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+        MenuManager::Instance().OpenMenu("PauseMenu");
+    }
 }

@@ -1,0 +1,88 @@
+#include "Button.h"
+#include "ServiceRegistry.h"
+#include "IRenderService.h"
+#include <iostream>
+
+// Static members initialization
+SpriteRenderer Button::spriteRenderer;
+bool Button::isRendererInitialized = false;
+
+// Constructor
+Button::Button(const std::string& label, const Texture& texture, const glm::vec2& position)
+    : label(label), texture(texture), position(position), state(ButtonState::Default), action(nullptr) {
+    // Initialize the sprite renderer if it's not already initialized
+    if (!isRendererInitialized) {
+        spriteRenderer.Initialize();
+        isRendererInitialized = true;
+    }
+}
+
+// Set the action callback for the button
+void Button::SetAction(std::function<void()> action) {
+    this->action = action;
+}
+
+// Render the button
+void Button::Render() const {
+    // Temporary fixed size for buttons
+    glm::vec2 buttonSize(64.0f, 16.0f);  // Change to desired fixed size
+
+    // Get the texture coordinates based on the button state (row/column in texture)
+    int row = 0, column = 0;
+    std::tie(row, column) = GetTextureRowAndColumn();
+
+    // Use the SpriteRenderer to draw the button using the state-based row and column
+    spriteRenderer.Render(texture, position, buttonSize, 0.0f, glm::vec3(1.0f), row, column);
+}
+
+// Set the button state (Normal, Hovered, Selected, Disabled)
+void Button::SetState(ButtonState newState) {
+    state = newState;
+}
+
+void Button::ProcessInput(GLFWwindow* window) {
+
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+
+    // Check if the cursor is hovering over the button
+    if (IsMouseOver(mouseX, mouseY)) {
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            SetState(ButtonState::Selected);  // Change state if clicked
+
+            // If the button is selected and has an action, execute it
+            if (action) {
+                action();
+            }
+        }
+        else {
+            SetState(ButtonState::Hovered);  // Change state if hovered but not clicked
+        }
+    }
+    else {
+        SetState(ButtonState::Default);  // Set to default if not hovered
+    }
+}
+
+// Check if the mouse is hovering over the button
+bool Button::IsMouseOver(double mouseX, double mouseY) const {
+    glm::vec2 buttonSize(64.0f, 16.0f);  // Fixed size
+    return (mouseX >= position.x && mouseX <= position.x + buttonSize.x &&
+        mouseY >= position.y && mouseY <= position.y + buttonSize.y);
+}
+
+// Calculate the texture coordinates offset based on the button's state
+std::pair<int, int> Button::GetTextureRowAndColumn() const {
+    switch (state) {
+    case ButtonState::Default:
+        return { 0, 0 };  // First part of the texture (row 0, column 0)
+    case ButtonState::Hovered:
+        return { 1, 0 };  // Second part (row 1, column 0)
+    case ButtonState::Selected:
+        return { 2, 0 };  // Third part (row 2, column 0)
+    case ButtonState::Disabled:
+        return { 3, 0 };  // Fourth part (row 3, column 0)
+    default:
+        return { 0, 0 };  // Default to normal
+    }
+}

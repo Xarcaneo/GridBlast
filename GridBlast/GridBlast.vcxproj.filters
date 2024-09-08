@@ -33,6 +33,12 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{97f6f56d-f25d-4f8b-8dd5-1eb5edd21759}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI\Menus">
+      <UniqueIdentifier>{cfbb2393-4c3c-4584-b411-bc53ac8ac3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Button">
+      <UniqueIdentifier>{f9372e66-8632-4699-a8d7-ad164acbdae8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -80,17 +86,20 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files\Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="MenuManager.cpp">
-      <Filter>Source Files\UI</Filter>
+    <ClCompile Include="GameMenu.cpp">
+      <Filter>Source Files\UI\Menus</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\UI\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="GameMenu.cpp">
-      <Filter>Source Files\UI</Filter>
+    <ClCompile Include="MenuManager.cpp">
+      <Filter>Source Files\UI\Menus</Filter>
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\UI\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\UI\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,27 +151,33 @@
     <ClInclude Include="StaticTile.h">
       <Filter>Source Files\Game Logic</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuManager.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMenu.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="IResourceService.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="PauseMenu.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\UI\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenu.h">
+      <Filter>Source Files\UI\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Source Files\UI\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Source Files\UI\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuManager.h">
+      <Filter>Source Files\UI\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Source Files\UI\Button</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resource Files\Textures\border_tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resource Files\Textures\Button.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -21,8 +21,10 @@ Engine::~Engine() {
     Cleanup();
 }
 void Engine::LoadResources() {
-    ServiceRegistry::getInstance().getService<IResourceService>()->
-        LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");;
+    auto resourceService = ServiceRegistry::getInstance().getService<IResourceService>();
+
+    resourceService->LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");
+    resourceService->LoadTexture("buttonTexture", "D:/GitHub/GridBlast/Resource Files/Textures/Button.png");
 }
 
 void Engine::Run() {
@@ -65,11 +67,9 @@ void Engine::Render() {
     // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Iterate through all opened menus and render them
-    MenuManager::Instance().ForEachOpenedMenu([](std::shared_ptr<Menu> menu)
-        {
-            menu->Render();  // Render each menu
-        });
+    if (MenuManager::Instance().CurrentMenu()) {
+        MenuManager::Instance().CurrentMenu()->Render();
+    }
 }
 
 

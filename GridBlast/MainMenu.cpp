@@ -1,9 +1,12 @@
 #include "MainMenu.h"
 #include "MenuManager.h"
 #include <iostream>
+#include "ServiceRegistry.h"
+#include "IResourceService.h"
 
 void MainMenu::OnStart() {
     // Custom initialization logic for MainMenu
+    InitializeButtons();
     std::cout << "Main Menu Initialized" << std::endl;
 }
 
@@ -13,10 +16,9 @@ void MainMenu::OnOpenMenu() {
 }
 
 void MainMenu::Render() const {
-    // Render the main menu elements
-
-    // Placeholder: Implement actual rendering logic here for buttons, background, etc.
-    // For example, spriteRenderer.Render(buttonTexture, buttonPosition, buttonSize, 0.0f, color);
+    for (const auto& button : buttons) {
+        button->Render();
+    }
 }
 
 void MainMenu::ProcessInput(GLFWwindow* window) {
@@ -28,4 +30,35 @@ void MainMenu::ProcessInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
         MenuManager::Instance().OpenMenu("GameMenu");
     }
+
+    // Loop through all buttons and process input for each one
+    for (const auto& button : buttons) {
+        button->ProcessInput(window);  // Pass window for hover and click detection
+    }
+}
+
+// Initialize buttons with positions, sizes, and actions
+void MainMenu::InitializeButtons() {
+    // Retrieve texture from the resource manager
+    std::shared_ptr<Texture> texture = ServiceRegistry::getInstance().getService<IResourceService>()->GetTexture("buttonTexture");
+
+    // Create and add buttons to the menu
+    auto startButton = std::make_shared<Button>("Start Game", *texture, glm::vec2(100.0f, 150.0f));
+    auto exitButton = std::make_shared<Button>("Exit", *texture, glm::vec2(100, 200));
+
+    // Assign actions to buttons
+    startButton->SetAction([]() {
+        // Switch to GameMenu or start a new game here
+        MenuManager::Instance().OpenMenu("GameMenu");
+        });
+
+    exitButton->SetAction([]() {
+        // Code to exit the game
+        glfwSetWindowShouldClose(glfwGetCurrentContext(), true);  // Close the window
+        });
+
+
+    // Add buttons to the container
+    buttons.push_back(startButton);
+    buttons.push_back(exitButton);
 }

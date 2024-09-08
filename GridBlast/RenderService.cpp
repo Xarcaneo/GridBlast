@@ -23,3 +23,15 @@ void RenderService::setTileSize(const glm::vec2& size)
 {
     tileSize = size;
 }
+
+// Get the viewport size (only width and height)
+glm::ivec2 RenderService::getViewportSize() const
+{
+    return viewportSize;
+}
+
+// Set the viewport size (only width and height)
+void RenderService::setViewportSize(const glm::ivec2& newViewportSize)
+{
+    viewportSize = newViewportSize;
+}

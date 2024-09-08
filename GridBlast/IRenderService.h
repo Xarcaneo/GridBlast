@@ -22,6 +22,10 @@ public:
     // Virtual setter for tileSize
     virtual void setTileSize(const glm::vec2& size) = 0;
 
+    virtual glm::ivec2 getViewportSize() const = 0;
+   
+    virtual void setViewportSize(const glm::ivec2& viewport) = 0;
+
 protected:
     glm::mat4 projectionMatrix;
     glm::vec2 tileSize; // Variable to store tile size

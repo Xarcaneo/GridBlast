@@ -112,7 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,6 +136,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GridMap.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="ServiceRegistry.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="stb.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -158,6 +160,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GridMap.h" />
     <ClInclude Include="IGameService.h" />
@@ -174,6 +177,7 @@
     <ClInclude Include="ServiceRegistry.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="StaticTile.h" />
+    <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Window.h" />

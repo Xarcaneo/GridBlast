@@ -33,3 +33,37 @@ void ResourceManager::UnloadTexture(const std::string& id) {
 void ResourceManager::UnloadAllTextures() {
     resources.clear();
 }
+
+std::shared_ptr<Font> ResourceManager::LoadFont(const std::string& id, const std::string& fontPath) {
+    auto it = fonts.find(id);
+    if (it != fonts.end()) {
+        return it->second;
+    }
+
+    auto font = std::make_shared<Font>(id, fontPath);
+    if (font->Load()) {
+        fonts[id] = font;
+        return font;
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Font> ResourceManager::GetFont(const std::string& id) const {
+    auto it = fonts.find(id);
+    if (it != fonts.end()) {
+        return it->second;
+    }
+    return nullptr;
+}
+
+void ResourceManager::UnloadFont(const std::string& id) {
+    auto it = fonts.find(id);
+    if (it != fonts.end()) {
+        fonts.erase(it);
+    }
+}
+
+void ResourceManager::UnloadAllFonts() {
+    fonts.clear();
+}

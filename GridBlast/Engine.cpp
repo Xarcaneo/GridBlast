@@ -12,6 +12,7 @@ Engine::Engine(const char* windowTitle, int width, int height)
     std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
     retrievedRenderService->setTileSize(glm::vec2(32.0f, 32.0f));
     retrievedRenderService->setProjectionMatrix(window->GetProjectionMatrix());
+    retrievedRenderService->setViewportSize(glm::ivec2(width, height));
 
     // Initialize and run the menu manager
     MenuManager::Instance().InitializeMenus();
@@ -25,6 +26,8 @@ void Engine::LoadResources() {
 
     resourceService->LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");
     resourceService->LoadTexture("buttonTexture", "D:/GitHub/GridBlast/Resource Files/Textures/Button.png");
+
+    resourceService->LoadFont("cruiserFont", "D:/GitHub/GridBlast/Resource Files/Fonts/Cruiser.ttf");
 }
 
 void Engine::Run() {

@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include "Texture.h"
 #include "SpriteRenderer.h"
+#include "TextRenderer.h"
 #include <GLFW/glfw3.h>
 
 enum class ButtonState {
@@ -17,7 +18,8 @@ enum class ButtonState {
 class Button {
 public:
     // Constructor
-    Button(const std::string& label, const Texture& texture, const glm::vec2& position);
+    Button(const std::string& label, const Texture& texture, const glm::vec2& position,
+        std::shared_ptr<Font> font, unsigned int labelSize);
 
     // Render method to draw the button on the screen
     void Render() const;
@@ -29,7 +31,7 @@ public:
 
     // Set the action to be performed when the button is selected
     void SetAction(std::function<void()> action);
-
+ 
 private:
     std::string label;          // Button label text
     glm::vec2 position;         // Button position
@@ -40,6 +42,11 @@ private:
 
     std::pair<int, int> GetTextureRowAndColumn() const; // Helper function to calculate texture coordinates
     bool IsMouseOver(double mouseX, double mouseY) const;
+    glm::vec2 GetScaledMousePosition(GLFWwindow* window) const;
+
+    std::unique_ptr<TextRenderer> textRenderer;  // Use unique_ptr for automatic cleanup
+    std::shared_ptr<Font> font;                  // Font shared across different components
+    unsigned int labelSize;                      // Font size for the label
 
     static SpriteRenderer spriteRenderer; // Shared renderer for buttons
     static bool isRendererInitialized;    // Flag to ensure renderer is initialized once

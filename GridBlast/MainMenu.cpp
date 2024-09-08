@@ -41,10 +41,11 @@ void MainMenu::ProcessInput(GLFWwindow* window) {
 void MainMenu::InitializeButtons() {
     // Retrieve texture from the resource manager
     std::shared_ptr<Texture> texture = ServiceRegistry::getInstance().getService<IResourceService>()->GetTexture("buttonTexture");
+    std::shared_ptr<Font> font = ServiceRegistry::getInstance().getService<IResourceService>()->GetFont("cruiserFont");
 
     // Create and add buttons to the menu
-    auto startButton = std::make_shared<Button>("Start Game", *texture, glm::vec2(100.0f, 150.0f));
-    auto exitButton = std::make_shared<Button>("Exit", *texture, glm::vec2(100, 200));
+    auto startButton = std::make_shared<Button>("Start Game", *texture, glm::vec2(100.0f, 150.0f), font, 8);
+    auto exitButton = std::make_shared<Button>("Exit", *texture, glm::vec2(100, 200), font, 8);
 
     // Assign actions to buttons
     startButton->SetAction([]() {

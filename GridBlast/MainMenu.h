@@ -12,7 +12,7 @@ public:
     void OnStart() override; // Initialize the main menu
     void OnOpenMenu() override; // Actions when the main menu is opened
     void Render() const override; // Render the game menu
-    void ProcessInput(GLFWwindow* window) override;
+    void ProcessInput(InputManager& inputManager) override;
 
 private:
     std::vector<std::shared_ptr<Button>> buttons;  // Container for buttons

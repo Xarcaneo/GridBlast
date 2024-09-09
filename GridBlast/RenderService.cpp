@@ -35,3 +35,12 @@ void RenderService::setViewportSize(const glm::ivec2& newViewportSize)
 {
     viewportSize = newViewportSize;
 }
+
+// Implementing window getter and setter
+GLFWwindow* RenderService::getWindow() const {
+    return window;
+}
+
+void RenderService::setWindow(GLFWwindow* newWindow) {
+    window = newWindow;
+}

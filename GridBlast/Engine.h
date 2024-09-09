@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "IResourceService.h"
+#include "InputManager.h" 
 
 class Engine {
 public:
@@ -27,6 +28,8 @@ private:
     // FPS tracking
     double lastTime;
     int nbFrames;
+
+    InputManager inputManager;  // InputManager to handle all input
 };
 
 #endif // ENGINE_H

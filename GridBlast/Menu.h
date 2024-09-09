@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "InputManager.h"
 
 class Menu {
 public:
@@ -12,7 +13,7 @@ public:
     virtual void Render() const = 0; // Pure virtual method for rendering the menu  
 
     // New: Process input for the menu
-    virtual void ProcessInput(GLFWwindow* window) {}
+    virtual void ProcessInput(InputManager& inputManager) {}
 
     void SetActive(bool active) { isActive = active; }
     bool IsActive() const { return isActive; }

@@ -65,13 +65,13 @@ void Button::SetState(ButtonState newState) {
     state = newState;
 }
 
-void Button::ProcessInput(GLFWwindow* window) {
+void Button::ProcessInput(InputManager& inputManager) {
     // Get and scale mouse position
-    glm::vec2 mousePos = GetScaledMousePosition(window);
+    glm::vec2 mousePos = GetScaledMousePosition();
 
     // Check if the cursor is hovering over the button
     if (IsMouseOver(mousePos.x, mousePos.y)) {
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        if (inputManager.IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT)) {
             SetState(ButtonState::Selected);  // Change state if clicked
 
             // If the button is selected and has an action, execute it
@@ -90,10 +90,11 @@ void Button::ProcessInput(GLFWwindow* window) {
 }
 
 // Helper function to get the scaled mouse position
-glm::vec2 Button::GetScaledMousePosition(GLFWwindow* window) const {
+glm::vec2 Button::GetScaledMousePosition() const {
     // Retrieve the viewport size from the render service
     std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
     glm::vec2 viewport = retrievedRenderService->getViewportSize();
+    GLFWwindow* window = retrievedRenderService->getWindow();
 
     // Get the current mouse position
     double mouseX, mouseY;

@@ -8,6 +8,7 @@
 #include "SpriteRenderer.h"
 #include "TextRenderer.h"
 #include <GLFW/glfw3.h>
+#include "InputManager.h"
 
 // Enumeration for button states
 enum class ButtonState {
@@ -27,7 +28,7 @@ public:
     void Render() const;
 
     // Handle input and update button state
-    void ProcessInput(GLFWwindow* window);
+    void ProcessInput(InputManager& inputManager);
 
     // State management
     void SetState(ButtonState state);
@@ -57,7 +58,7 @@ private:
     // Private helper methods
     std::pair<int, int> GetTextureRowAndColumn() const; // Get the texture coordinates based on button state
     bool IsMouseOver(double mouseX, double mouseY) const; // Check if the mouse is over the button
-    glm::vec2 GetScaledMousePosition(GLFWwindow* window) const; // Get mouse position scaled to screen
+    glm::vec2 GetScaledMousePosition() const; // Get mouse position scaled to screen
 
     // Render methods for button parts
     void RenderButton(const glm::vec2& buttonSize) const;  // Render button texture

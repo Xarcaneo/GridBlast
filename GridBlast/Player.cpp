@@ -7,20 +7,21 @@ Player::Player(const Texture& texture, const glm::vec2& position, float speed)
 }
 
 // Function to process input
-void Player::ProcessInput(GLFWwindow* window) {
+void Player::ProcessInput(InputManager& inputManager) {
     // Movement directions
     glm::vec2 direction(0.0f, 0.0f);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+    // Check for key holds and adjust direction accordingly
+    if (inputManager.IsKeyHeld(GLFW_KEY_W)) {
         direction.y -= 1.0f;  // Move up
     }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+    if (inputManager.IsKeyHeld(GLFW_KEY_S)) {
         direction.y += 1.0f;  // Move down
     }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    if (inputManager.IsKeyHeld(GLFW_KEY_A)) {
         direction.x -= 1.0f;  // Move left
     }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+    if (inputManager.IsKeyHeld(GLFW_KEY_D)) {
         direction.x += 1.0f;  // Move right
     }
 

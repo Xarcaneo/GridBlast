@@ -13,6 +13,7 @@ Engine::Engine(const char* windowTitle, int width, int height)
     retrievedRenderService->setTileSize(glm::vec2(32.0f, 32.0f));
     retrievedRenderService->setProjectionMatrix(window->GetProjectionMatrix());
     retrievedRenderService->setViewportSize(glm::ivec2(width, height));
+    retrievedRenderService->setWindow(window->GetGLFWwindow());
 
     // Initialize and run the menu manager
     MenuManager::Instance().InitializeMenus();
@@ -53,12 +54,10 @@ void Engine::Run() {
 }
 
 void Engine::ProcessInput() {
-    if (glfwGetKey(window->GetGLFWwindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window->GetGLFWwindow(), true);
-    }
+    inputManager.Update(window->GetGLFWwindow());
 
     if (MenuManager::Instance().CurrentMenu()) {
-        MenuManager::Instance().CurrentMenu()->ProcessInput(window->GetGLFWwindow());
+        MenuManager::Instance().CurrentMenu()->ProcessInput(inputManager);
     }
 }
 

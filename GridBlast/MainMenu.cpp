@@ -21,10 +21,20 @@ void MainMenu::Render() const {
     }
 }
 
-void MainMenu::ProcessInput(GLFWwindow* window) {
-    // Loop through all buttons and process input for each one
+void MainMenu::ProcessInput(InputManager& inputManager) {
+    //Loop through all buttons and process input for each one
     for (const auto& button : buttons) {
-        button->ProcessInput(window);  // Pass window for hover and click detection
+        button->ProcessInput(inputManager);  // Pass window for hover and click detection
+    }
+
+    if (inputManager.IsKeyPressed(GLFW_KEY_P)) {
+        std::cout << "P key pressed while button is active" << std::endl;
+        // Perform button-specific action on P key press
+    }
+
+    if (inputManager.IsKeyHeld(GLFW_KEY_ENTER)) {
+        std::cout << "Enter key is held down while button is active" << std::endl;
+        // Perform action if the Enter key is being held
     }
 }
 

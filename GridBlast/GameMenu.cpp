@@ -24,19 +24,11 @@ void GameMenu::Render() const {
     gridMap->Render();
 }
 
-void GameMenu::ProcessInput(GLFWwindow* window) {
+void GameMenu::ProcessInput(InputManager& inputManager) {
    
-    gridMap->GetPlayer()->ProcessInput(window);
+    gridMap->GetPlayer()->ProcessInput(inputManager);
 
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
-        std::cout << "Enter key pressed in Game Menu" << std::endl;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-        MenuManager::Instance().OpenMenu("MainMenu");
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+    if (inputManager.IsKeyPressed(GLFW_KEY_P) || inputManager.IsKeyPressed(GLFW_KEY_ESCAPE)) {
         MenuManager::Instance().OpenMenu("PauseMenu");
     }
 }

@@ -16,12 +16,12 @@ public:
     void setTileSize(const glm::vec2& size) override;
 
     // Viewport related methods
-    glm::ivec2 getViewportSize() const;                // Get the viewport size {width, height}
-    void setViewportSize(const glm::ivec2& viewport);  // Set the viewport size {width, height}
+    glm::ivec2 getViewportSize() const override;                // Get the viewport size {width, height}
+    void setViewportSize(const glm::ivec2& viewport) override;  // Set the viewport size {width, height}
 
+    GLFWwindow* getWindow() const override;
+    void setWindow(GLFWwindow* window) override;
 private:
-    glm::mat4 projectionMatrix;
-    glm::vec2 tileSize;
     glm::ivec2 viewportSize;  // Stores only the viewport width and height
 };
 

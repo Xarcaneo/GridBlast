@@ -22,15 +22,6 @@ void MainMenu::Render() const {
 }
 
 void MainMenu::ProcessInput(GLFWwindow* window) {
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
-        std::cout << "Enter key pressed in Main Menu" << std::endl;
-    }
-    // Add more input handling for menu options
-
-    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-        MenuManager::Instance().OpenMenu("GameMenu");
-    }
-
     // Loop through all buttons and process input for each one
     for (const auto& button : buttons) {
         button->ProcessInput(window);  // Pass window for hover and click detection
@@ -44,8 +35,9 @@ void MainMenu::InitializeButtons() {
     std::shared_ptr<Font> font = ServiceRegistry::getInstance().getService<IResourceService>()->GetFont("cruiserFont");
 
     // Create and add buttons to the menu
-    auto startButton = std::make_shared<Button>("Start Game", *texture, glm::vec2(100.0f, 150.0f), font, 8);
-    auto exitButton = std::make_shared<Button>("Exit", *texture, glm::vec2(100, 200), font, 8);
+    auto startButton = std::make_shared<Button>("Start Game", *texture, glm::vec2(448.0f, 240.0f), font, 8);
+    auto exitButton = std::make_shared<Button>("Exit", *texture, glm::vec2(448.0f, 276.0f), font, 8);
+
 
     // Assign actions to buttons
     startButton->SetAction([]() {

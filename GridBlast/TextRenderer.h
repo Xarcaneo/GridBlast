@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 #ifndef TEXT_RENDERER_H
 #define TEXT_RENDERER_H
 
@@ -22,6 +22,8 @@ public:
     // Render text on the screen
     void RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color);
 
+    // Get the size of the rendered text
+    glm::vec2 GetTextSize(const std::string& text) const;
 private:
     std::map<char, Glyph> Glyphs;  // Map to store the Glyphs
     unsigned int VAO, VBO;                // Vertex Array Object and Vertex Buffer Object for text rendering

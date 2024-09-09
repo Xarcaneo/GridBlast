@@ -29,20 +29,35 @@ void Button::SetAction(std::function<void()> action) {
     this->action = action;
 }
 
-// Render the button
 void Button::Render() const {
-    // Temporary fixed size for buttons
-    glm::vec2 buttonSize(64.0f, 16.0f);  // Change to desired fixed size
+    glm::vec2 buttonSize(64.0f, 16.0f);  // Temporary fixed size for buttons
 
+    // Render the button's texture
+    RenderButton(buttonSize);
+
+    // Render the centered text
+    RenderCenteredText(buttonSize);
+}
+
+void Button::RenderButton(const glm::vec2& buttonSize) const {
     // Get the texture coordinates based on the button state (row/column in texture)
     int row = 0, column = 0;
     std::tie(row, column) = GetTextureRowAndColumn();
 
-    // Use the SpriteRenderer to draw the button using the state-based row and column
+    // Render the button texture using the SpriteRenderer
     spriteRenderer.Render(texture, position, buttonSize, 0.0f, glm::vec3(1.0f), row, column);
+}
 
-    // Load a font (ensure the font path is correct)
-    textRenderer->RenderText(label, position.x, position.y, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+void Button::RenderCenteredText(const glm::vec2& buttonSize) const {
+    // Get text size
+    glm::vec2 textSize = textRenderer->GetTextSize(label);
+
+    // Calculate the centered position for the text
+    float centeredX = position.x + (buttonSize.x - textSize.x) / 2;
+    float centeredY = position.y + (buttonSize.y - textSize.y) / 2;
+
+    // Render the text centered
+    textRenderer->RenderText(label, centeredX, centeredY, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 }
 
 // Set the button state (Normal, Hovered, Selected, Disabled)

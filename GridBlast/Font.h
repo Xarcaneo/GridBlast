@@ -17,7 +17,7 @@ struct Glyph {
 
 class Font : public Resource {
 public:
-    Font(const std::string& id, const std::string& fontPath, unsigned int fontSize = 8);
+    Font(const std::string& id, const std::string& fontPath, unsigned int fontSize = 256);
     ~Font() override;
 
     // Override the pure virtual Load function from Resource

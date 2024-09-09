@@ -24,15 +24,15 @@ void main()
 const char* textFragmentShaderSource = R"(
 #version 330 core
 in vec2 TexCoords;
-out vec4 color;
+out vec4 FragColor;
 
-uniform sampler2D text;
+uniform sampler2D sdfTexture;
 uniform vec3 textColor;
 
-void main()
-{    
-    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
-    color = vec4(textColor, 1.0) * sampled;
+void main() {
+    float distance = texture(sdfTexture, TexCoords).r;
+    float alpha = smoothstep(0.5 - 0.1, 0.5 + 0.1, distance);  // Adjust the 0.1 value for sharpness
+    FragColor = vec4(textColor, alpha);
 }
 )";
 
@@ -185,4 +185,22 @@ void TextRenderer::setupRenderData() {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+}
+
+glm::vec2 TextRenderer::GetTextSize(const std::string& text) const {
+    float width = 0.0f;
+    float height = 0.0f;
+
+    // Iterate through each character in the string
+    for (std::string::const_iterator c = text.begin(); c != text.end(); c++) {
+        Glyph glyph = Glyphs.at(*c);
+
+        // Increase the total width by the advance of the glyph
+        width += (glyph.Advance >> 6);  // Advance is in 1/64th pixels, so bit shift by 6
+        // Track the maximum height of any character in the string
+        height = std::max(height, static_cast<float>(glyph.Size.y));
+    }
+
+    // Return the width and height as a 2D vector (width, height)
+    return glm::vec2(width, height);
 }

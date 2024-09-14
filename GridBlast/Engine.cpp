@@ -3,17 +3,19 @@
 #include "MenuManager.h"
 #include "Menu.h"
 #include "IRenderService.h"
+#include "ICameraService.h"
 
 Engine::Engine(const char* windowTitle, int width, int height)
     : window(new Window(windowTitle, width, height)),
     isRunning(true), lastTime(0.0), nbFrames(0) {
     LoadResources();  // Load resources during engine initialization
 
-    std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
+    auto retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
     retrievedRenderService->setTileSize(glm::vec2(32.0f, 32.0f));
     retrievedRenderService->setProjectionMatrix(window->GetProjectionMatrix());
     retrievedRenderService->setViewportSize(glm::ivec2(width, height));
     retrievedRenderService->setWindow(window->GetGLFWwindow());
+    retrievedRenderService->SetupMatricesForRendering(false);
 
     // Initialize and run the menu manager
     MenuManager::Instance().InitializeMenus();
@@ -68,18 +70,20 @@ void Engine::ProcessInput() {
 }
 
 void Engine::Update() {
-    // Update game logic here
+    if (MenuManager::Instance().CurrentMenu()) {
+        MenuManager::Instance().CurrentMenu()->Update();
+    }
 }
 
 void Engine::Render() {
     // Clear the screen
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Render game objects here (menus, sprites, etc.)
     if (MenuManager::Instance().CurrentMenu()) {
         MenuManager::Instance().CurrentMenu()->Render();
     }
 }
-
 
 void Engine::Cleanup() {
     delete window;

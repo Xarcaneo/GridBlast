@@ -18,6 +18,9 @@ public:
     // Virtual setter for projectionMatrix
     virtual void setProjectionMatrix(const glm::mat4& matrix) = 0;
 
+    virtual glm::mat4 getViewMatrix() const = 0;            // New method to get the view matrix
+    virtual void setViewMatrix(const glm::mat4& matrix) = 0; // New method to set the view matrix
+
     // Virtual getter for tileSize
     virtual glm::vec2 getTileSize() const = 0;
 
@@ -36,8 +39,12 @@ public:
     // Setter for GLFWwindow pointer
     virtual void setWindow(GLFWwindow* window) = 0;
 
+    virtual void SetupMatricesForRendering(bool useCamera) = 0;
+
 protected:
     glm::mat4 projectionMatrix;
     glm::vec2 tileSize;        // Variable to store tile size
     GLFWwindow* window = nullptr; // Pointer to the window (GLFWwindow)
+    glm::mat4 viewMatrix;
+    glm::ivec2 viewportSize;  // Stores only the viewport width and height
 };

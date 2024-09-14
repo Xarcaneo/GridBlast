@@ -19,9 +19,12 @@ public:
     glm::ivec2 getViewportSize() const override;                // Get the viewport size {width, height}
     void setViewportSize(const glm::ivec2& viewport) override;  // Set the viewport size {width, height}
 
+    glm::mat4 getViewMatrix() const override;              
+    void setViewMatrix(const glm::mat4& matrix) override;
+
     GLFWwindow* getWindow() const override;
     void setWindow(GLFWwindow* window) override;
-private:
-    glm::ivec2 viewportSize;  // Stores only the viewport width and height
+
+    void SetupMatricesForRendering(bool useCamera) override;
 };
 

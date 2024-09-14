@@ -69,6 +69,7 @@ bool SpriteRenderer::Initialize() {
 
 void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, const glm::vec2& size,
     float rotate, const glm::vec3& color, int row, int column) {
+
     // Use the shader program
     shaderProgram->Use();
 
@@ -85,19 +86,21 @@ void SpriteRenderer::Render(const Texture& texture, const glm::vec2& position, c
     glm::vec2 texCoordsMin(column * tileWidth, 1.0f - (row + 1) * tileHeight);
     glm::vec2 texCoordsMax((column + 1) * tileWidth, 1.0f - row * tileHeight);
 
-    // Create transformation matrix for the sprite
+    // Create transformation matrix for the sprite (model matrix)
     glm::mat4 model = glm::mat4(1.0f);  // Identity matrix
     model = glm::translate(model, glm::vec3(position, 0.0f));  // Translate to the position
     model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate
     model = glm::scale(model, glm::vec3(size, 1.0f)); // Scale to the correct size
 
-    // Get the projection matrix from RenderService
-    std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
-    glm::mat4 projection = retrievedRenderService->getProjectionMatrix();
+    // Get the view and projection matrices from RenderService
+    auto retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
+    glm::mat4 view = retrievedRenderService->getViewMatrix();            // Get view matrix
+    glm::mat4 projection = retrievedRenderService->getProjectionMatrix(); // Get projection matrix
 
     // Send matrices to the shader
     shaderProgram->SetMatrix4("model", model);
-    shaderProgram->SetMatrix4("projection", projection);
+    shaderProgram->SetMatrix4("view", view);         // Set the view matrix
+    shaderProgram->SetMatrix4("projection", projection); // Set the projection matrix
     shaderProgram->SetVector3f("spriteColor", color);
 
     // Bind the texture

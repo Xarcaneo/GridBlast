@@ -17,7 +17,12 @@ public:
     Tile* GetTile(int x, int y) const; // Get a tile at a specific grid position
     void SetTile(int x, int y, std::unique_ptr<Tile> tile); // Set a tile at a specific grid position
 
+
     Player* GetPlayer() const; // Getter for the player instance
+
+    int getMapWidth() const { return width; }
+    int getMapHeight() const { return height; }
+
 private:
     int width;
     int height;

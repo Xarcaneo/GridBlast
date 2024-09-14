@@ -10,10 +10,13 @@ public:
     void OnStart() override; // Initialize the game menu
     void OnOpenMenu() override; // Actions when the game menu is opened
     void Render() const override; // Render the main menu
+    void Update() override;
     void ProcessInput(InputManager& inputManager) override;
 
 private:
     std::unique_ptr<GridMap> gridMap; // Grid map instance
+
+    void UpdateCamera();
 };
 
 #endif // GAME_MENU_H

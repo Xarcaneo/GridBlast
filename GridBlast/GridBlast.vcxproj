@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Bootstrapper.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CameraService.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -161,11 +162,13 @@
   <ItemGroup>
     <ClInclude Include="Bootstrapper.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CameraService.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GridMap.h" />
+    <ClInclude Include="ICameraService.h" />
     <ClInclude Include="IGameService.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IRenderService.h" />

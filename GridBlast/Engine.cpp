@@ -25,10 +25,16 @@ Engine::~Engine() {
 void Engine::LoadResources() {
     auto resourceService = ServiceRegistry::getInstance().getService<IResourceService>();
 
+    // Load textures
     resourceService->LoadTexture("borderTiles", "D:/GitHub/GridBlast/Resource Files/Textures/border_tiles.png");
     resourceService->LoadTexture("buttonTexture", "D:/GitHub/GridBlast/Resource Files/Textures/Button.png");
 
+    // Load fonts
     resourceService->LoadFont("cruiserFont", "D:/GitHub/GridBlast/Resource Files/Fonts/Cruiser.ttf");
+
+    // Load shaders
+    resourceService->LoadShader("spriteShader", "D:/GitHub/GridBlast/Resource Files/Shaders/sprite.vert", "D:/GitHub/GridBlast/Resource Files/Shaders/sprite.frag");
+    resourceService->LoadShader("textShader", "D:/GitHub/GridBlast/Resource Files/Shaders/text.vert", "D:/GitHub/GridBlast/Resource Files/Shaders/text.frag");
 }
 
 void Engine::Run() {

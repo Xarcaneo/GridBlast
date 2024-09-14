@@ -67,3 +67,37 @@ void ResourceManager::UnloadFont(const std::string& id) {
 void ResourceManager::UnloadAllFonts() {
     fonts.clear();
 }
+
+std::shared_ptr<Shader> ResourceManager::LoadShader(const std::string& id, const std::string& vertexPath, const std::string& fragmentPath) {
+    auto it = shaders.find(id);
+    if (it != shaders.end()) {
+        return it->second;
+    }
+
+    auto shader = std::make_shared<Shader>(id, vertexPath, fragmentPath);
+    if (shader->Load()) {
+        shaders[id] = shader;
+        return shader;
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Shader> ResourceManager::GetShader(const std::string& id) const {
+    auto it = shaders.find(id);
+    if (it != shaders.end()) {
+        return it->second;
+    }
+    return nullptr;
+}
+
+void ResourceManager::UnloadShader(const std::string& id) {
+    auto it = shaders.find(id);
+    if (it != shaders.end()) {
+        shaders.erase(it);
+    }
+}
+
+void ResourceManager::UnloadAllShaders() {
+    shaders.clear();
+}

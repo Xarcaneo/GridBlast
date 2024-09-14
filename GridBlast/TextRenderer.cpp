@@ -1,52 +1,26 @@
 #include "TextRenderer.h"
+#include "ServiceRegistry.h"
+#include "IResourceService.h"
+#include "IRenderService.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include <GL/glew.h>
-
-// Vertex and Fragment shader source code
-const char* textVertexShaderSource = R"(
-#version 330 core
-layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
-
-out vec2 TexCoords;
-
-uniform mat4 projection;
-
-void main()
-{
-    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
-    // Flip the Y-coordinate here
-    TexCoords = vec2(vertex.z, 1.0 - vertex.w);
-}
-)";
-
-const char* textFragmentShaderSource = R"(
-#version 330 core
-in vec2 TexCoords;
-out vec4 FragColor;
-
-uniform sampler2D sdfTexture;
-uniform vec3 textColor;
-
-void main() {
-    float distance = texture(sdfTexture, TexCoords).r;
-    float alpha = smoothstep(0.5 - 0.1, 0.5 + 0.1, distance);  // Adjust the 0.1 value for sharpness
-    FragColor = vec4(textColor, alpha);
-}
-)";
 
 TextRenderer::TextRenderer()
-    : VAO(0), VBO(0), shaderProgram(0) {
+    : VAO(0), VBO(0), shaderProgram(nullptr) {
     setupRenderData();
-    compileShaders();
+
+    // Retrieve the shader program from ResourceManager
+    shaderProgram = ServiceRegistry::getInstance().getService<IResourceService>()->GetShader("textShader");
+
+    if (!shaderProgram) {
+        std::cerr << "Failed to load shader program: textShader" << std::endl;
+    }
 }
 
 TextRenderer::~TextRenderer() {
-    // Clean up OpenGL resources
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
 }
 
 void TextRenderer::Load(const std::shared_ptr<Font>& font) {
@@ -65,18 +39,17 @@ void TextRenderer::RenderText(const std::string& text, float x, float y, float s
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Use the shader program for text rendering
-    glUseProgram(shaderProgram);
+    shaderProgram->Use();
 
     // Retrieve the projection matrix from IRenderService
     std::shared_ptr<IRenderService> retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
     glm::mat4 projection = retrievedRenderService->getProjectionMatrix();
 
     // Set the projection matrix in the shader
-    unsigned int projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    shaderProgram->SetMatrix4("projection", projection);
 
     // Set the text color
-    glUniform3f(glGetUniformLocation(shaderProgram, "textColor"), color.x, color.y, color.z);
+    shaderProgram->SetVector3f("textColor", color);
 
     // Render each character in the text string
     glActiveTexture(GL_TEXTURE0);
@@ -86,11 +59,11 @@ void TextRenderer::RenderText(const std::string& text, float x, float y, float s
     for (c = text.begin(); c != text.end(); c++) {
         Glyph glyph = Glyphs[*c];
 
-        float xpos = x + glyph.Bearing.x;  // Remove scaling on bearing
-        float ypos = y - (glyph.Size.y - glyph.Bearing.y);  // Remove scaling on size
+        float xpos = x + glyph.Bearing.x * scale;
+        float ypos = y - (glyph.Size.y - glyph.Bearing.y) * scale;
 
-        float w = glyph.Size.x;  // Remove scaling from width
-        float h = glyph.Size.y;  // Remove scaling from height
+        float w = glyph.Size.x * scale;
+        float h = glyph.Size.y * scale;
 
         // Update VBO for each character's quad
         float vertices[6][4] = {
@@ -114,8 +87,8 @@ void TextRenderer::RenderText(const std::string& text, float x, float y, float s
         // Render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // Advance to the next character (>> 6 is a bitwise operation to divide by 64)
-        x += (glyph.Advance >> 6);
+        // Advance to the next character
+        x += (glyph.Advance >> 6) * scale;
     }
 
     // Unbind after rendering
@@ -124,50 +97,6 @@ void TextRenderer::RenderText(const std::string& text, float x, float y, float s
 
     // Disable blending to avoid affecting other rendering parts
     glDisable(GL_BLEND);
-}
-
-bool TextRenderer::compileShaders() {
-    unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, textVertexShaderSource);
-    unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, textFragmentShaderSource);
-
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    // Check for linking errors
-    int success;
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-        return false;
-    }
-
-    // Clean up shaders as they are linked into the program now
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return true;
-}
-
-unsigned int TextRenderer::compileShader(unsigned int type, const std::string& source) {
-    unsigned int shader = glCreateShader(type);
-    const char* src = source.c_str();
-    glShaderSource(shader, 1, &src, nullptr);
-    glCompileShader(shader);
-
-    // Check for compilation errors
-    int success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    return shader;
 }
 
 void TextRenderer::setupRenderData() {

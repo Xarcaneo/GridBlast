@@ -2,6 +2,7 @@
 #include <iostream>
 #include "MenuManager.h"
 #include "IResourceService.h"
+#include "ServiceRegistry.h"
 
 void PauseMenu::OnStart() {
     // Custom initialization logic for PauseMenu

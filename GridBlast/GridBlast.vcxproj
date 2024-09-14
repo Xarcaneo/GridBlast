@@ -150,6 +150,7 @@
     <ClCompile Include="RenderService.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ServiceRegistry.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ServiceRegistry.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="StaticTile.h" />
     <ClInclude Include="TextRenderer.h" />

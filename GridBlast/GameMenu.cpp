@@ -11,7 +11,7 @@ void GameMenu::OnOpenMenu() {
     // Custom actions when the GameMenu is opened
     std::cout << "Game Menu Opened" << std::endl;
 
-    gridMap = std::make_unique<GridMap>(18, 15);
+    gridMap = std::make_unique<GridMap>();
 }
 
 void GameMenu::Render() const {

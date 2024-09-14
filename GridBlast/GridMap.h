@@ -5,10 +5,11 @@
 #include <memory>
 #include "Player.h"
 #include "Tile.h"
+#include "LevelLoader.h"
 
 class GridMap {
 public:
-    GridMap(int width, int height);
+    GridMap();
 
     void Initialize(); // Initialize the grid with tiles
     void Render() const; // Render all tiles in the grid
@@ -22,6 +23,8 @@ private:
     int height;
     std::vector<std::vector<std::unique_ptr<Tile>>> grid; // 2D grid of tiles
     std::unique_ptr<Player> player;        // Player instance
+
+    LevelLoader levelLoader;
 };
 
 #endif // GRID_MAP_H

@@ -141,6 +141,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GridMap.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
@@ -168,6 +169,8 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IRenderService.h" />
     <ClInclude Include="IResourceService.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuManager.h" />

@@ -110,6 +110,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Source Files\Game Logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bootstrapper.h">
@@ -189,6 +192,12 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Source Files\Game Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

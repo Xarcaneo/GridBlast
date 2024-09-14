@@ -46,7 +46,7 @@ void PauseMenu::InitializeButtons() {
     // Assign actions to buttons
     startButton->SetAction([]() {
         // Resume from pause
-        MenuManager::Instance().OpenMenu("GameMenu");
+        MenuManager::Instance().CloseMenu();
         });
 
     exitButton->SetAction([]() {

@@ -23,6 +23,8 @@ public:
     int getMapWidth() const { return width; }
     int getMapHeight() const { return height; }
 
+    void Update(float deltaTime);
+
 private:
     int width;
     int height;

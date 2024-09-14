@@ -41,6 +41,8 @@ void Engine::LoadResources() {
 
 void Engine::Run() {
     while (isRunning && !window->ShouldClose()) {
+
+        CalculateDeltaTime(); // Update deltaTime
         ProcessInput();
         Update();
         Render();
@@ -71,7 +73,7 @@ void Engine::ProcessInput() {
 
 void Engine::Update() {
     if (MenuManager::Instance().CurrentMenu()) {
-        MenuManager::Instance().CurrentMenu()->Update();
+        MenuManager::Instance().CurrentMenu()->Update(deltaTime);
     }
 }
 
@@ -83,6 +85,13 @@ void Engine::Render() {
     if (MenuManager::Instance().CurrentMenu()) {
         MenuManager::Instance().CurrentMenu()->Render();
     }
+}
+
+void Engine::CalculateDeltaTime() {
+    auto currentFrameTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsedTime = currentFrameTime - lastFrameTime;
+    deltaTime = elapsedTime.count();  // deltaTime in seconds
+    lastFrameTime = currentFrameTime;
 }
 
 void Engine::Cleanup() {

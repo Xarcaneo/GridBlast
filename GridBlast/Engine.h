@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "IResourceService.h"
 #include "InputManager.h" 
+#include <chrono>
 
 class Engine {
 public:
@@ -20,6 +21,7 @@ private:
     void Update();        // Game logic update
     void Render();        // Rendering logic
     void Cleanup();       // Cleanup resources
+    void CalculateDeltaTime(); // New method for delta time calculation
 
     // Private Members
     Window* window;       // Pointer to the Window object
@@ -28,6 +30,9 @@ private:
     // FPS tracking
     double lastTime;
     int nbFrames;
+
+    std::chrono::high_resolution_clock::time_point lastFrameTime;
+    double deltaTime;        // Member variable to store delta time
 
     InputManager inputManager;  // InputManager to handle all input
 };

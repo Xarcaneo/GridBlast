@@ -36,8 +36,9 @@ void GameMenu::ProcessInput(InputManager& inputManager) {
     }
 }
 
-void GameMenu::Update()
+void GameMenu::Update(float deltaTime)
 {
+    gridMap->Update(deltaTime);
     UpdateCamera();
 }
 

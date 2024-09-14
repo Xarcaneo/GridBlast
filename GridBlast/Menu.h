@@ -11,7 +11,7 @@ public:
     virtual void OnStart() {} // Called when the menu is initialized
     virtual void OnOpenMenu() {} // Called when the menu is opened
     virtual void Render() const = 0; // Pure virtual method for rendering the menu  
-    virtual void Update() {} 
+    virtual void Update(float deltaTime) {}
 
     // New: Process input for the menu
     virtual void ProcessInput(InputManager& inputManager) {}

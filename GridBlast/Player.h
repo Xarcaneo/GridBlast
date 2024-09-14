@@ -16,6 +16,13 @@ public:
         // Add any additional player-specific movement logic here
         Character::Move(direction);  // Call the base class method
     }
+
+    void Update(float deltaTime) override;
+
+private:
+    glm::vec2 targetPosition;
+    bool isMoving;
+    static constexpr float gridSize = 1.0f; // Size of one grid cell
 };
 
 #endif // PLAYER_H

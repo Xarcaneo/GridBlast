@@ -40,8 +40,8 @@ void GridMap::Initialize() {
     }
 
     // Set up the player (use a different position if needed)
-    glm::vec2 playerPosition = glm::vec2(10, 10);
-    player = std::make_unique<Player>(*texture, playerPosition, 10);
+    glm::vec2 playerPosition = glm::vec2(0, 0);
+    player = std::make_unique<Player>(*texture, playerPosition, 70);
 }
 
 
@@ -70,5 +70,10 @@ void GridMap::SetTile(int x, int y, std::unique_ptr<Tile> tile) {
 
 Player* GridMap::GetPlayer() const {
     return player.get();
+}
+
+void GridMap::Update(float deltaTime)
+{
+    player->Update(deltaTime);
 }
 

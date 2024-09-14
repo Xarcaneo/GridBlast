@@ -13,6 +13,7 @@ public:
     virtual void Move(const glm::vec2& direction);
     virtual void SetPosition(const glm::vec2& position);
     virtual void Render() const; // Concrete render method
+    virtual void Update(float deltaTime) = 0;
     glm::vec2 GetPosition() const;
 
 protected:

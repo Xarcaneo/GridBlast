@@ -28,7 +28,7 @@ public:
 private:
     int width;
     int height;
-    std::vector<std::vector<std::unique_ptr<Tile>>> grid; // 2D grid of tiles
+    std::vector<std::vector<std::vector<std::unique_ptr<Tile>>>> grid;
     std::unique_ptr<Player> player;        // Player instance
 
     LevelLoader levelLoader;

@@ -1,5 +1,8 @@
+// LevelLoader.cpp
 #include "LevelLoader.h"
 #include <fstream>
+#include <iostream>
+#include <stdexcept>
 
 using json = nlohmann::json;
 
@@ -24,25 +27,28 @@ void LevelLoader::LoadLevel(const std::string& filePath) {
 
 void LevelLoader::parseJSON(const json& jsonData) {
     // Extract basic map information
-    tileSize = jsonData["tileSize"].get<int>();
     mapWidth = jsonData["mapWidth"].get<int>();
     mapHeight = jsonData["mapHeight"].get<int>();
+
+    // Parse the tileset
+    parseTileset(jsonData["tileset"]);
 
     // Parse the layers
     for (const auto& layerData : jsonData["layers"]) {
         Layer layer;
         layer.name = layerData["name"].get<std::string>();
-        layer.collider = layerData["collider"].get<bool>();
-
-        // Parse each tile in the layer
-        for (const auto& tileData : layerData["tiles"]) {
-            LevelTile tile;
-            tile.id = std::stoi(tileData["id"].get<std::string>());
-            tile.position = glm::vec2(tileData["x"].get<int>(), tileData["y"].get<int>());
-
-            layer.tiles.push_back(tile);
-        }
-
+        layer.data = layerData["data"].get<std::vector<std::vector<int>>>();
         layers.push_back(layer);
+    }
+}
+
+void LevelLoader::parseTileset(const json& tilesetData) {
+    for (const auto& tile : tilesetData["tiles"]) {
+        TileDefinition tileDef;
+        tileDef.id = tile["id"].get<int>();
+        tileDef.type = tile["type"].get<std::string>();
+        tileDef.row = tile["row"].get<int>();
+        tileDef.column = tile["column"].get<int>();
+        tileDefinitions[tileDef.id] = tileDef;
     }
 }

@@ -1,38 +1,40 @@
+// LevelLoader.h
 #pragma once
 #include <string>
 #include <vector>
-#include <glm/vec2.hpp> // For 2D vectors
+#include <unordered_map>
+#include <glm/vec2.hpp>
 #include "json.hpp"
 
-// Renamed the Tile struct to LevelTile to avoid conflict with the Tile class
-struct LevelTile {
+struct TileDefinition {
     int id;
-    glm::vec2 position;
+    std::string type;
+    int row;
+    int column;
 };
 
 struct Layer {
     std::string name;
-    std::vector<LevelTile> tiles;
-    bool collider;
+    std::vector<std::vector<int>> data; // 2D array of tile IDs
 };
 
 class LevelLoader {
 public:
-    LevelLoader() = default; // Default constructor
+    LevelLoader() = default;
 
-    // Load level from the specified file path
     void LoadLevel(const std::string& filePath);
 
-    int getTileSize() const { return tileSize; }
     int getMapWidth() const { return mapWidth; }
     int getMapHeight() const { return mapHeight; }
+    const std::unordered_map<int, TileDefinition>& getTileDefinitions() const { return tileDefinitions; }
     const std::vector<Layer>& getLayers() const { return layers; }
 
 private:
-    int tileSize;
     int mapWidth;
     int mapHeight;
+    std::unordered_map<int, TileDefinition> tileDefinitions;
     std::vector<Layer> layers;
 
     void parseJSON(const nlohmann::json& jsonData);
+    void parseTileset(const nlohmann::json& tilesetData);
 };

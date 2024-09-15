@@ -192,10 +192,6 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Resource Files\Textures\border_tiles.png" />
-    <Image Include="..\Resource Files\Textures\Button.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -11,11 +11,12 @@ struct TileDefinition {
     std::string type;
     int row;
     int column;
+    int collision; 
 };
 
 struct Layer {
     std::string name;
-    std::vector<std::vector<int>> data; // 2D array of tile IDs
+    std::vector<std::vector<int>> data;
 };
 
 class LevelLoader {

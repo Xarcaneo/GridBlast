@@ -7,7 +7,7 @@
 #include "IRenderService.h"
 
 Player::Player(const Texture& texture, const glm::vec2& position, float speed)
-    : Character(texture, position, speed), isMoving(false), targetPosition(position) {
+    : Character(texture, position, speed) {
 }
 
 void Player::ProcessInput(InputManager& inputManager) {
@@ -34,26 +34,16 @@ void Player::ProcessInput(InputManager& inputManager) {
 
         // If a movement key was pressed
         if (direction.x != 0.0f || direction.y != 0.0f) {
-            targetPosition = position + direction * gridSize;
+            targetPosition = position + direction;
             isMoving = true;
+            SetNextPosition(direction);
         }
     }
 }
 
 void Player::Update(float deltaTime) {
-    if (isMoving) {
-        glm::vec2 direction = glm::normalize(targetPosition - position);
-        glm::vec2 movement = direction * speed * deltaTime;
-
-        // Check if the movement overshoots the target
-        if (glm::length(movement) >= glm::length(targetPosition - position)) {
-            position = targetPosition;
-            isMoving = false;
-        }
-        else {
-            position += movement;
-        }
-    }
+    
+    Move(deltaTime);
 
     // Update the camera to follow the player
     glm::vec2 playerPosition = GetPosition();

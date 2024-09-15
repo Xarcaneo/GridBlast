@@ -17,7 +17,6 @@ public:
     Tile* GetTile(int x, int y) const; // Get a tile at a specific grid position
     void SetTile(int x, int y, std::unique_ptr<Tile> tile); // Set a tile at a specific grid position
 
-
     Player* GetPlayer() const; // Getter for the player instance
 
     int getMapWidth() const { return width; }
@@ -26,6 +25,9 @@ public:
     void Update(float deltaTime);
 
 private:
+    void CheckCollisions();
+    bool CheckCollisionAtNextPosition(glm::vec2& nextPosition, Character &character);
+
     int width;
     int height;
     std::vector<std::vector<std::vector<std::unique_ptr<Tile>>>> grid;

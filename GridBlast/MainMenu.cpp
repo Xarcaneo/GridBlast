@@ -31,11 +31,6 @@ void MainMenu::ProcessInput(InputManager& inputManager) {
         std::cout << "P key pressed while button is active" << std::endl;
         // Perform button-specific action on P key press
     }
-
-    if (inputManager.IsKeyHeld(GLFW_KEY_ENTER)) {
-        std::cout << "Enter key is held down while button is active" << std::endl;
-        // Perform action if the Enter key is being held
-    }
 }
 
 // Initialize buttons with positions, sizes, and actions

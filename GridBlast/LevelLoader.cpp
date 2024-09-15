@@ -49,6 +49,9 @@ void LevelLoader::parseTileset(const json& tilesetData) {
         tileDef.type = tile["type"].get<std::string>();
         tileDef.row = tile["row"].get<int>();
         tileDef.column = tile["column"].get<int>();
+        tileDef.collision = tile["collision"].get<bool>(); 
+
         tileDefinitions[tileDef.id] = tileDef;
     }
 }
+

@@ -52,7 +52,7 @@ void GridMap::Initialize() {
                 glm::vec2 position = glm::vec2(x * tileSize.x, y * tileSize.y);
 
                 // Create the tile
-                auto tile = std::make_unique<StaticTile>(*texture, position, tileDef.row, tileDef.column);
+                auto tile = std::make_unique<StaticTile>(*texture, position, tileDef.row, tileDef.column, tileDef.collision);
 
                 // Initialize the vector at grid[x][y] if it's empty
                 if (grid[x][y].empty()) {
@@ -104,5 +104,28 @@ Player* GridMap::GetPlayer() const {
 }
 
 void GridMap::Update(float deltaTime) {
+    CheckCollisions();
     player->Update(deltaTime);
+}
+
+void GridMap::CheckCollisions()
+{
+    glm::vec2 nextPosition = player->GetNextPosition();
+    CheckCollisionAtNextPosition(nextPosition, *player);
+}
+
+bool GridMap::CheckCollisionAtNextPosition(glm::vec2& nextPosition, Character& character) {
+    int gridX = static_cast<int>(nextPosition.x);
+    int gridY = static_cast<int>(nextPosition.y);
+
+    // Ensure the next position is within bounds
+    if (gridX >= 0 && gridX < width && gridY >= 0 && gridY < height) {
+        const Tile* tile = GetTile(gridX, gridY);
+        if (tile && tile->IsCollidable()) {
+            character.StopMove();
+            return true;
+        }
+    }
+
+    return false;
 }

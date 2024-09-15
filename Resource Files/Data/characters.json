@@ -1,0 +1,10 @@
+{
+  "characters": [
+    {
+      "id": 1,
+      "name": "Player",
+      "type": "player",
+      "speed": 100
+    }
+  ]
+}

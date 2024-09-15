@@ -29,7 +29,10 @@ void GameMenu::Render() const {
 }
 
 void GameMenu::ProcessInput(InputManager& inputManager) {
-    gridMap->GetPlayer()->ProcessInput(inputManager);
+
+    if (gridMap->GetPlayer()) {
+        gridMap->GetPlayer()->ProcessInput(inputManager);
+    }
 
     if (inputManager.IsKeyPressed(GLFW_KEY_P) || inputManager.IsKeyPressed(GLFW_KEY_ESCAPE)) {
         MenuManager::Instance().OpenMenu("PauseMenu");
@@ -44,13 +47,16 @@ void GameMenu::Update(float deltaTime)
 
 // New method to cleanly update the camera position
 void GameMenu::UpdateCamera() {
-    // Get player position and map size
-    auto renderService = ServiceRegistry::getInstance().getService<IRenderService>();
-    glm::vec2 tileSize = renderService->getTileSize();
-    glm::vec2 playerPosition = gridMap->GetPlayer()->GetPosition();
-    glm::vec2 mapSize(gridMap->getMapWidth() * tileSize.x, gridMap->getMapHeight() * tileSize.y);
 
-    // Retrieve the CameraService and clamp the camera to the map bounds
-    auto cameraService = ServiceRegistry::getInstance().getService<ICameraService>();
-    cameraService->clampCameraToMapBounds(playerPosition, mapSize);
+    if (gridMap->GetPlayer()) {
+        // Get player position and map size
+        auto renderService = ServiceRegistry::getInstance().getService<IRenderService>();
+        glm::vec2 tileSize = renderService->getTileSize();
+        glm::vec2 playerPosition = gridMap->GetPlayer()->GetPosition();
+        glm::vec2 mapSize(gridMap->getMapWidth() * tileSize.x, gridMap->getMapHeight() * tileSize.y);
+
+        // Retrieve the CameraService and clamp the camera to the map bounds
+        auto cameraService = ServiceRegistry::getInstance().getService<ICameraService>();
+        cameraService->clampCameraToMapBounds(playerPosition, mapSize);
+    }
 }

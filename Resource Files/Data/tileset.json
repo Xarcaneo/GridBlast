@@ -1,0 +1,26 @@
+{
+  "tileCount": 3,
+  "tiles": [
+    {
+      "id": 1,
+      "type": "grass",
+      "row": 0,
+      "column": 1,
+      "collision": false
+    },
+    {
+      "id": 2,
+      "type": "wooden_wall",
+      "row": 0,
+      "column": 0,
+      "collision": true
+    },
+    {
+      "id": 3,
+      "type": "wooden_crate",
+      "row": 0,
+      "column": 2,
+      "collision": true
+    }
+  ]
+}

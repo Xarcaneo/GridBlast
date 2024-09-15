@@ -34,40 +34,65 @@ void GridMap::Initialize() {
     // Get tile definitions
     const auto& tileDefs = levelLoader.getTileDefinitions();
 
-    // Populate the grid with tiles from the LevelLoader
+    // Populate the grid and characters with tiles from the LevelLoader
     const auto& layers = levelLoader.getLayers();
     for (const auto& layer : layers) {
-        for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
-                int tileID = layer.data[y][x];
-                if (tileID == 0) continue; // No tile at this position
+        if (layer.name != "Characters") {
+            for (int y = 0; y < height; ++y) {
+                for (int x = 0; x < width; ++x) {
+                    int tileID = layer.data[y][x];
+                    if (tileID == 0) continue; // No tile at this position
 
-                auto it = tileDefs.find(tileID);
-                if (it == tileDefs.end()) {
-                    std::cerr << "Tile ID " << tileID << " not found in tile definitions.\n";
-                    continue;
+                    auto it = tileDefs.find(tileID);
+                    if (it == tileDefs.end()) {
+                        std::cerr << "Tile ID " << tileID << " not found in tile definitions.\n";
+                        continue;
+                    }
+
+                    const auto& tileDef = it->second;
+                    glm::vec2 position = glm::vec2(x * tileSize.x, y * tileSize.y);
+
+                    // Create the tile
+                    auto tile = std::make_unique<StaticTile>(*texture, position, tileDef.row, tileDef.column, tileDef.collision);
+
+                    // Initialize the vector at grid[x][y] if it's empty
+                    if (grid[x][y].empty()) {
+                        grid[x][y] = std::vector<std::unique_ptr<Tile>>();
+                    }
+
+                    // Add tile to the grid at this position
+                    grid[x][y].push_back(std::move(tile));
                 }
+            }
+        }
+        else
+        {
+            // Handle character layer
+            const auto& characterDefs = levelLoader.getCharacterDefinitions();
 
-                const auto& tileDef = it->second;
-                glm::vec2 position = glm::vec2(x * tileSize.x, y * tileSize.y);
+            for (int y = 0; y < height; ++y) {
+                for (int x = 0; x < width; ++x) {
+                    int charID = layer.data[y][x];
+                    if (charID == 0) continue; // No character at this position
 
-                // Create the tile
-                auto tile = std::make_unique<StaticTile>(*texture, position, tileDef.row, tileDef.column, tileDef.collision);
+                    // Check if character definition exists
+                    auto charDefIt = characterDefs.find(charID);
+                    if (charDefIt == characterDefs.end()) {
+                        std::cerr << "Character ID " << charID << " not found in character definitions.\n";
+                        continue;
+                    }
 
-                // Initialize the vector at grid[x][y] if it's empty
-                if (grid[x][y].empty()) {
-                    grid[x][y] = std::vector<std::unique_ptr<Tile>>();
+                    const auto& charDef = charDefIt->second;
+                    glm::vec2 characterPosition = glm::vec2(x * tileSize.x, y * tileSize.y);
+
+                    if (charDef.type == "player") {
+                        // Create the player at the found position
+                        player = std::make_unique<Player>(*texture, characterPosition, charDef.speed);
+                    }
                 }
-
-                // Add tile to the grid at this position
-                grid[x][y].push_back(std::move(tile));
             }
         }
     }
-
-    // Set up the player (use a different position if needed)
-    glm::vec2 playerPosition = glm::vec2(1 * tileSize.x, 1 * tileSize.y);
-    player = std::make_unique<Player>(*texture, playerPosition, 70);
 }
 
 void GridMap::Render() const {
@@ -80,7 +105,8 @@ void GridMap::Render() const {
         }
     }
 
-    player->Render();
+    if(player)
+        player->Render();
 }
 
 Tile* GridMap::GetTile(int x, int y) const {
@@ -105,13 +131,17 @@ Player* GridMap::GetPlayer() const {
 
 void GridMap::Update(float deltaTime) {
     CheckCollisions();
-    player->Update(deltaTime);
+
+    if (player)
+        player->Update(deltaTime);
 }
 
 void GridMap::CheckCollisions()
 {
-    glm::vec2 nextPosition = player->GetNextPosition();
-    CheckCollisionAtNextPosition(nextPosition, *player);
+    if (player) {
+        glm::vec2 nextPosition = player->GetNextPosition();
+        CheckCollisionAtNextPosition(nextPosition, *player);
+    }
 }
 
 bool GridMap::CheckCollisionAtNextPosition(glm::vec2& nextPosition, Character& character) {

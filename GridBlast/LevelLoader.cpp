@@ -21,6 +21,18 @@ void LevelLoader::LoadLevel(const std::string& filePath) {
         throw std::runtime_error("Error parsing JSON file");
     }
 
+    // Load the tileset file
+    if (jsonData.contains("tileset")) {
+        std::string tilesetFilePath = jsonData["tileset"].get<std::string>();
+        LoadTileset(tilesetFilePath);
+    }
+
+    // Load the characterset 
+    if (jsonData.contains("characterset")) {
+        std::string characterFilePath = jsonData["characterset"];
+        LoadCharacterSet(characterFilePath);
+    }
+
     // Parse the JSON data
     parseJSON(jsonData);
 }
@@ -29,9 +41,6 @@ void LevelLoader::parseJSON(const json& jsonData) {
     // Extract basic map information
     mapWidth = jsonData["mapWidth"].get<int>();
     mapHeight = jsonData["mapHeight"].get<int>();
-
-    // Parse the tileset
-    parseTileset(jsonData["tileset"]);
 
     // Parse the layers
     for (const auto& layerData : jsonData["layers"]) {
@@ -55,3 +64,43 @@ void LevelLoader::parseTileset(const json& tilesetData) {
     }
 }
 
+void LevelLoader::LoadTileset(const std::string& tilesetFilePath) {
+    std::ifstream file(tilesetFilePath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open tileset file!");
+    }
+
+    json tilesetData;
+    file >> tilesetData;
+
+    if (tilesetData.is_discarded()) {
+        throw std::runtime_error("Error parsing tileset file");
+    }
+
+    parseTileset(tilesetData);
+}
+
+void LevelLoader::LoadCharacterSet(const std::string& filePath) {
+    // Open and read the JSON file for characters
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open character file!");
+    }
+
+    json characterData;
+    file >> characterData;
+    if (characterData.is_discarded()) {
+        throw std::runtime_error("Error parsing character JSON file");
+    }
+
+    // Parse each character from the JSON
+    for (const auto& charData : characterData["characters"]) {
+        CharacterDefinition charDef;
+        charDef.id = charData["id"].get<int>();
+        charDef.name = charData["name"].get<std::string>();
+        charDef.type = charData["type"].get<std::string>();
+        charDef.speed = charData["speed"].get<float>();
+
+        characterDefinitions[charDef.id] = charDef;
+    }
+}

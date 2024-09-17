@@ -28,4 +28,6 @@ public:
     virtual std::shared_ptr<Shader> GetShader(const std::string& id) const = 0;
     virtual void UnloadShader(const std::string& id) = 0;
     virtual void UnloadAllShaders() = 0;
+
+    virtual void LoadResourcesFromJSON(const std::string& filePath) = 0;
 };

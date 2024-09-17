@@ -31,6 +31,7 @@ public:
     void UnloadShader(const std::string& id) override;
     void UnloadAllShaders() override;
 
+    void LoadResourcesFromJSON(const std::string& filePath) override;
 private:
     std::map<std::string, std::shared_ptr<Texture>> resources; // Manage textures by ID
     std::map<std::string, std::shared_ptr<Font>> fonts;

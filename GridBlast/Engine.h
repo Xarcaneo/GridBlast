@@ -14,7 +14,6 @@ public:
 
     // Public Methods
     void Run();           // Starts the main loop
-    void LoadResources(); // Load all necessary resources
 
 private:
     void ProcessInput();  // Input handling

@@ -1,0 +1,13 @@
+{
+  "textures": [
+    { "id": "tileset", "path": "../Resource Files/Textures/tileset.png" },
+    { "id": "buttonTexture", "path": "../Resource Files/Textures/Button.png" }
+  ],
+  "fonts": [
+    { "id": "cruiserFont", "path": "../Resource Files/Fonts/Cruiser.ttf" }
+  ],
+  "shaders": [
+    { "id": "spriteShader", "vertexPath": "../Resource Files/Shaders/sprite.vert", "fragmentPath": "../Resource Files/Shaders/sprite.frag" },
+    { "id": "textShader", "vertexPath": "../Resource Files/Shaders/text.vert", "fragmentPath": "../Resource Files/Shaders/text.frag" }
+  ]
+}

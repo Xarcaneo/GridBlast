@@ -7,8 +7,10 @@
 
 Engine::Engine(const char* windowTitle, int width, int height)
     : window(new Window(windowTitle, width, height)),
-    isRunning(true), lastTime(0.0), nbFrames(0) {
-    LoadResources();  // Load resources during engine initialization
+    isRunning(true), lastTime(0.0), nbFrames(0), deltaTime(0) {
+
+    auto resourceService = ServiceRegistry::getInstance().getService<IResourceService>();
+    resourceService->LoadResourcesFromJSON("../Resource Files/Data/Resources.json");
 
     auto retrievedRenderService = ServiceRegistry::getInstance().getService<IRenderService>();
     retrievedRenderService->setTileSize(glm::vec2(32.0f, 32.0f));
@@ -23,20 +25,6 @@ Engine::Engine(const char* windowTitle, int width, int height)
 
 Engine::~Engine() {
     Cleanup();
-}
-void Engine::LoadResources() {
-    auto resourceService = ServiceRegistry::getInstance().getService<IResourceService>();
-
-    // Load textures
-    resourceService->LoadTexture("tileset", "../Resource Files/Textures/tileset.png");
-    resourceService->LoadTexture("buttonTexture", "../Resource Files/Textures/Button.png");
-
-    // Load fonts
-    resourceService->LoadFont("cruiserFont", "../Resource Files/Fonts/Cruiser.ttf");
-
-    // Load shaders
-    resourceService->LoadShader("spriteShader", "../Resource Files/Shaders/sprite.vert", "../Resource Files/Shaders/sprite.frag");
-    resourceService->LoadShader("textShader", "../Resource Files/Shaders/text.vert", "../Resource Files/Shaders/text.frag");
 }
 
 void Engine::Run() {

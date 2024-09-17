@@ -1,4 +1,6 @@
 #include "ResourceManager.h"
+#include <fstream>
+#include "json.hpp"
 
 std::shared_ptr<Texture> ResourceManager::LoadTexture(const std::string& id, const std::string& filePath) {
     auto it = resources.find(id);
@@ -100,4 +102,46 @@ void ResourceManager::UnloadShader(const std::string& id) {
 
 void ResourceManager::UnloadAllShaders() {
     shaders.clear();
+}
+
+void ResourceManager::LoadResourcesFromJSON(const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open resources JSON file!");
+    }
+
+    nlohmann::json jsonData;
+    file >> jsonData;
+
+    if (jsonData.is_discarded()) {
+        throw std::runtime_error("Error parsing resources JSON file");
+    }
+
+    // Load Textures
+    if (jsonData.contains("textures")) {
+        for (const auto& textureData : jsonData["textures"]) {
+            std::string id = textureData["id"].get<std::string>();
+            std::string path = textureData["path"].get<std::string>();
+            LoadTexture(id, path);
+        }
+    }
+
+    // Load Fonts
+    if (jsonData.contains("fonts")) {
+        for (const auto& fontData : jsonData["fonts"]) {
+            std::string id = fontData["id"].get<std::string>();
+            std::string path = fontData["path"].get<std::string>();
+            LoadFont(id, path);
+        }
+    }
+
+    // Load Shaders
+    if (jsonData.contains("shaders")) {
+        for (const auto& shaderData : jsonData["shaders"]) {
+            std::string id = shaderData["id"].get<std::string>();
+            std::string vertexPath = shaderData["vertexPath"].get<std::string>();
+            std::string fragmentPath = shaderData["fragmentPath"].get<std::string>();
+            LoadShader(id, vertexPath, fragmentPath);
+        }
+    }
 }
